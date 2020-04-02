@@ -2,7 +2,6 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const morgan = require('morgan');
 const Person = require('./models/person');
 
@@ -16,7 +15,7 @@ app.listen(PORT, () => {
 });
 
 // Custom logging via morgan
-morgan.token('data',(req, res) => {
+morgan.token('data', (req) => {
     return req.method === 'POST'
         ? JSON.stringify(req.body)
         : null;
@@ -34,7 +33,7 @@ app.use(morgan((tokens, req, res) => {
         tokens.res(req, res, 'content-length'), '-',
         tokens['response-time'](req, res), 'ms',
         tokens.data(req, res)
-    ].join(' ')
+    ].join(' ');
 }));
 
 // Routes
@@ -57,7 +56,7 @@ app.get('/api/persons', (req, res) => {
     });
 });
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
     Person.findById(req.params.id)
         .then(person => res.json(person.toJSON()))
         .catch(error => next(error));
@@ -65,7 +64,7 @@ app.get('/api/persons/:id', (req, res) => {
 
 app.delete('/api/persons/:id', (req, res, next) => {
     Person.findByIdAndRemove(req.params.id)
-        .then(result => res.status(204).end())
+        .then(() => res.status(204).end())
         .catch(error => next(error));
 });
 
@@ -85,17 +84,17 @@ app.post('/api/persons', (req, res, next) => {
     });
 
     person.save()
-        .then(savedPerson => { res.json(savedPerson.toJSON()) })
+        .then(savedPerson => { res.json(savedPerson.toJSON()); })
         .catch(error => next(error));
 });
 
-app.put('/api/persons/:id', (req, res) => {
+app.put('/api/persons/:id', (req, res, next) => {
     const body = req.body;
 
     const person = {
         name: body.name,
         number: body.number
-    }
+    };
 
     Person.findByIdAndUpdate(req.params.id, person, { new: true })
         .then(updatedPerson => res.json(updatedPerson.toJSON()))
@@ -106,7 +105,7 @@ app.put('/api/persons/:id', (req, res) => {
 // Handler for requests with unknown endpoint
 const unknownEndpoint = (req, res) => {
     res.status(404).send({ error: 'unknown endpoint' });
-}
+};
 app.use(unknownEndpoint);
 
 // Handler for request errors
@@ -121,7 +120,7 @@ const errorHandler = (error, req, res, next) => {
     }
 
     next(error);
-}
+};
 app.use(errorHandler);
 
 

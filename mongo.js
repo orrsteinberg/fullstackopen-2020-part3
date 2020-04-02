@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 // Check for proper usage
-if ( process.argv.length < 3 ) {
+if (process.argv.length < 3) {
     console.log('Usage: node mongo.js <password> <name> <number>');
-    process.exit(1)
+    process.exit(1);
 }
 
 // Connect to DB
@@ -19,7 +19,7 @@ const personSchema = new mongoose.Schema({
 const Person = mongoose.model('Person', personSchema);
 
 // Display all people or add new one depending on the number of arguments provided
-if ( process.argv.length === 3 ) {
+if (process.argv.length === 3) {
     console.log('Phonebook:');
     Person.find({}).then(result => {
         result.forEach(person => console.log(person.name, person.number));
@@ -32,7 +32,7 @@ if ( process.argv.length === 3 ) {
         number: process.argv[4]
     });
 
-    newPerson.save().then(response => {
+    newPerson.save().then(() => {
         console.log(`Added ${newPerson.name} number ${newPerson.number} to phonebook`);
         mongoose.connection.close();
     });
