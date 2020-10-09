@@ -14,7 +14,7 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-// Custom logging via morgan
+// Custom log via morgan
 morgan.token('data', (req) => {
     return req.method === 'POST'
         ? JSON.stringify(req.body)
@@ -35,12 +35,6 @@ app.use(morgan((tokens, req, res) => {
         tokens.data(req, res)
     ].join(' ');
 }));
-
-// Routes
-
-//app.get('/', (req, res) => {
-//    res.send('<h1>Hello World!</h1>');
-//})
 
 app.get('/info', (req, res) => {
     const date = new Date();
