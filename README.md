@@ -6,5 +6,7 @@
 
 ### Solutions to exercises:
 
-The exercises for this part of the course consist of building a REST backend for the frontend UI built in the last part.
+The exercises for this part of the course consist of building a REST backend for the basic frontend UI built in the last part.
 It requires its own repository, so this is a standalone repo for part 3.
+
+[View Live App](https://agile-caverns-07500.herokuapp.com/)
